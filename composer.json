@@ -16,10 +16,7 @@
   "autoload-dev": {
     "psr-4": {
       "AP\\Cryptographer\\Tests\\": "tests/"
-    },
-    "files": [
-      "tests/shapes.php"
-    ]
+    }
   },
   "require": {
     "php": "^8.3",

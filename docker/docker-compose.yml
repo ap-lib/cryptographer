@@ -4,3 +4,5 @@ services:
   php8:
     build:
       context: containers/php8.3
+    volumes:
+      - ../:/opt/project
