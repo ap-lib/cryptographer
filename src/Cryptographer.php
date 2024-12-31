@@ -12,6 +12,15 @@ readonly class Cryptographer
     public CipherAlgo $cipher_algo;
     public int        $tag_length;
 
+    /**
+     * @param CipherAlgo|string $cipher_algo The cipher method. For a list of available cipher methods, use
+     *                                      {@see CipherAlgo} and {@see openssl_get_cipher_methods()}
+     * @param string $passphrase The secret key
+     * @param int $options options is a bitwise disjunction of the flags OPENSSL_RAW_DATA and OPENSSL_ZERO_PADDING.
+     * @param int $tag_length Works only for CCM, GCM, and OCB cipher algo
+     *                  The longer the key, the more reliable the integrity check becomes.
+     *                  However, this also means that more additional bytes must be stored with each encrypted record.
+     */
     public function __construct(
         CipherAlgo|string                    $cipher_algo,
         #[\SensitiveParameter] public string $passphrase,
@@ -120,7 +129,7 @@ readonly class Cryptographer
      * @param string|null $tag The authentication tag generated during encryption (required for AEAD ciphers like GCM).
      * @param string $metadata isn't encrypted but is included in the authentication process to ensure its integrity.
      *                     It can be a metadata or any auxiliary information tied to the ciphertext,
-     *                     but it must match the AAD used during encryption.
+     *                     but it must match the metadata used during encryption.
      * @return string
      *
      * @throws DecryptingFailed original body
@@ -149,7 +158,8 @@ readonly class Cryptographer
         );
 
         if (false === $res) {
-            throw new DecryptingFailed(openssl_error_string());
+            $message = openssl_error_string();
+            throw new DecryptingFailed(is_string($message) ? $message : "");
         }
 
         return $res;
