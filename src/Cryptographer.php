@@ -2,6 +2,7 @@
 
 namespace AP\Cryptographer;
 
+use SensitiveParameter;
 use UnexpectedValueException;
 
 readonly class Cryptographer
@@ -22,10 +23,10 @@ readonly class Cryptographer
      *                  However, this also means that more additional bytes must be stored with each encrypted record.
      */
     public function __construct(
-        CipherAlgo|string                    $cipher_algo,
-        #[\SensitiveParameter] public string $passphrase,
-        public int                           $options = OPENSSL_RAW_DATA,
-        int                                  $tag_length = 16
+        CipherAlgo|string                   $cipher_algo,
+        #[SensitiveParameter] public string $passphrase,
+        public int                          $options = OPENSSL_RAW_DATA,
+        int                                 $tag_length = 16
     )
     {
         if (is_string($cipher_algo)) {
@@ -78,9 +79,9 @@ readonly class Cryptographer
      * @throws UnexpectedValueException
      */
     public function encrypt(
-        #[\SensitiveParameter] string $original_body,
-        ?string                       $iv = null,
-        string                        $metadata = "",
+        #[SensitiveParameter] string $original_body,
+        ?string                      $iv = null,
+        string                       $metadata = "",
     ): EncryptedPayload
     {
         if (is_null($iv)) {

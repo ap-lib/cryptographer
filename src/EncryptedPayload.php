@@ -16,7 +16,7 @@ readonly class EncryptedPayload
     }
 
     /**
-     * NOTE: Metadata no serialized to binary, you need to save or serialize it separately
+     * NOTE: metadata no serialized to binary, you need to save or serialize it separately
      *
      * @return string
      */
@@ -35,7 +35,7 @@ readonly class EncryptedPayload
     {
         if ($meta_data != "" && !$cipher_algo->isAllowedMetadata()) {
             throw new UnexpectedValueException(
-                "for the cipher algo `{$cipher_algo->value}` metadata is no allowed"
+                "for the cipher algo `$cipher_algo->value` metadata is no allowed"
             );
         }
 
